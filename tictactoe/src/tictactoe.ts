@@ -55,6 +55,10 @@ function checkDiagWin(gameState: GameState, player: Player): boolean {
 
 export function makeMove(gameState: GameState, row: number, col: number, player: Player): GameState {
     const newState = structuredClone(gameState)
+    if (newState.winner) {
+        return newState
+    }
+
     if (newState.board[row][col] !== undefined) {
         return newState
     }
