@@ -10,7 +10,6 @@ app.use(express.json())
 var serverGameState = structuredClone(initialGameState)
 const serverGames = new Map<string, GameState>()
 serverGames.set("fancyUUID", serverGameState)
-console.log(serverGames)
 
 app.get("/message", (_, res) => res.send("Hello from express!"));
 
@@ -37,7 +36,6 @@ app.post("/move", (req, res) => {
 app.post("/create", (req, res) => {
     const newServerGame = makeNewGame()
     serverGames.set(newServerGame.id, newServerGame)
-    console.log(serverGames)
     res.json((serverGameState)) //this doesn't actually do anything??
 })
 
