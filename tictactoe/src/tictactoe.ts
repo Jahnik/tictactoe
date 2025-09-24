@@ -3,12 +3,14 @@ export type Cell = Player | undefined
 export type Winner = Player | "Tie" | undefined
 
 export type GameState = {
+    id: string
     board: Cell[][],
     player: Player,
-    winner: Winner
+    winner: Winner,
 }
 
 export const initialGameState: GameState = {
+    id: "fancyUUID",
     board:
         [
             [undefined, undefined, undefined],
@@ -17,6 +19,12 @@ export const initialGameState: GameState = {
         ],
     player: "X",
     winner: undefined
+}
+
+export function makeNewGame(): GameState {
+    const newGame = structuredClone(initialGameState)
+    newGame.id = crypto.randomUUID()
+    return newGame
 }
 
 function checkTie(gameState: GameState): boolean {
