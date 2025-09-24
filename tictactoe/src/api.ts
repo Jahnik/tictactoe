@@ -1,10 +1,12 @@
+import type { GameState } from "./tictactoe"
 
 
-export async function fetchGameState(id: string) {
+export async function fetchGameState(id: string): Promise<GameState> {
     //add support for ids to this
     const res = await fetch(`/game/${encodeURIComponent(id)}`)
     if (!res.ok) throw new Error('failed to fetch game')
-    return res.json()
+    const game = await res.json() as GameState // TODO: validate instead of typecasting
+    return game
 }
 
 export async function sendMove(move: { id: string, row: number, col: number }) {
