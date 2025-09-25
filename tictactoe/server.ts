@@ -9,7 +9,7 @@ app.use(express.json())
 
 var serverGameState = structuredClone(initialGameState)
 const serverGames = new Map<string, GameState>()
-serverGames.set("fancyUUID", serverGameState)
+//serverGames.set("fancyUUID", serverGameState)
 
 app.get("/message", (_, res) => res.send("Hello from express!"));
 

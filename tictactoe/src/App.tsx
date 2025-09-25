@@ -52,15 +52,20 @@ function App() {
   }
   return (
     <>
-      <div className=' flex border w-full justify-evenly'>
+      <div className=' flex justify-center min-h-screen'>
         {displayGameId && <Game displayGameId={displayGameId} onReturnToLobby={() => setDisplayGameId(undefined)} />}
         {!displayGameId &&
-          <div>
-            <div className='flex flex-col'>
-              Game List
-              {gameListData().map((id) => <button key={id} onClick={() => handleGameSwitch(id)}> {id} </button>)}
+          <div className='flex flex-col justify-center'>
+            <div className='flex w-full flex-col'>
+              <div className='flex justify-center text-5xl'>Game List</div>
+              <div className='flex border-2 flex-col justify-center text-5xl'>
+                {gameListData().map((id) =>
+                  <button className='text-2xl'
+                    key={id} onClick={() => handleGameSwitch(id)}> {id}
+                  </button>)}
+              </div>
             </div>
-            <button onClick={handleCreate}>
+            <button className='flex justify-center text-2xl' onClick={handleCreate}>
               New Game
             </button>
           </div>}
