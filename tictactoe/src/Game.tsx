@@ -60,30 +60,35 @@ function Game({ displayGameId, onReturnToLobby }: GameProps) {
     }
 
     return (
-        <div>
-            <h1 className="text-3xl">
-                This is my Tic Tac Toe Board!
+        <div className='flex flex-col w-1/4 justify-center'>
+            <h1 className="flex text-5xl justify-center">
+                Tic Tac Toe
             </h1>
-            <Row>
-                <Cell value={game.board[0][0]} onClick={() => { handleMove(game.id, 0, 0) }}></Cell>
-                <Cell value={game.board[0][1]} onClick={() => { handleMove(game.id, 0, 1) }}></Cell>
-                <Cell value={game.board[0][2]} onClick={() => { handleMove(game.id, 0, 2) }}></Cell>
-            </Row>
-            <Row>
-                <Cell value={game.board[1][0]} onClick={() => { handleMove(game.id, 1, 0) }}></Cell>
-                <Cell value={game.board[1][1]} onClick={() => { handleMove(game.id, 1, 1) }}></Cell>
-                <Cell value={game.board[1][2]} onClick={() => { handleMove(game.id, 1, 2) }}></Cell>
-            </Row>
-            <Row>
-                <Cell value={game.board[2][0]} onClick={() => { handleMove(game.id, 2, 0) }}></Cell>
-                <Cell value={game.board[2][1]} onClick={() => { handleMove(game.id, 2, 1) }}></Cell>
-                <Cell value={game.board[2][2]} onClick={() => { handleMove(game.id, 2, 2) }}></Cell>
-            </Row>
+            <div className="flex text">
+                Game: {game.id}
+            </div>
+            <div className='flex flex-col'>
+                <Row>
+                    <Cell value={game.board[0][0]} onClick={() => { handleMove(game.id, 0, 0) }}></Cell>
+                    <Cell value={game.board[0][1]} onClick={() => { handleMove(game.id, 0, 1) }}></Cell>
+                    <Cell value={game.board[0][2]} onClick={() => { handleMove(game.id, 0, 2) }}></Cell>
+                </Row>
+                <Row>
+                    <Cell value={game.board[1][0]} onClick={() => { handleMove(game.id, 1, 0) }}></Cell>
+                    <Cell value={game.board[1][1]} onClick={() => { handleMove(game.id, 1, 1) }}></Cell>
+                    <Cell value={game.board[1][2]} onClick={() => { handleMove(game.id, 1, 2) }}></Cell>
+                </Row>
+                <Row>
+                    <Cell value={game.board[2][0]} onClick={() => { handleMove(game.id, 2, 0) }}></Cell>
+                    <Cell value={game.board[2][1]} onClick={() => { handleMove(game.id, 2, 1) }}></Cell>
+                    <Cell value={game.board[2][2]} onClick={() => { handleMove(game.id, 2, 2) }}></Cell>
+                </Row>
+            </div>
             <h1 className="flex text-3xl justify-center">
                 The Winner is: {game.winner === undefined ? "TBD!" : game.winner}
             </h1>
             <button onClick={onReturnToLobby}>Return to Lobby</button>
-        </div>
+        </div >
     )
 }
 
