@@ -14,13 +14,13 @@ type CellProps = {
 const Cell = ({ value, onClick }: CellProps) => {
   return (
     <div className="flex-1 aspect-square border flex items-center justify-center text-8xl rounded-2xl" onClick={onClick}>
-      {value === undefined ? "_" : value}
+      {value === null ? "_" : value}
     </div>
   )
 }
 
 function App() {
-  const [displayGameId, setDisplayGameId] = useState<string | undefined>(undefined)
+  const [displayGameId, setDisplayGameId] = useState<string | null>(null)
   const queryClient = useQueryClient()
 
   function handleGameSwitch(id: string) {
@@ -53,7 +53,7 @@ function App() {
   return (
     <>
       <div className=' flex justify-center min-h-screen'>
-        {displayGameId && <Game displayGameId={displayGameId} onReturnToLobby={() => setDisplayGameId(undefined)} />}
+        {displayGameId && <Game displayGameId={displayGameId} onReturnToLobby={() => setDisplayGameId(null)} />}
         {!displayGameId &&
           <div className='flex flex-col justify-center'>
             <div className='flex w-full flex-col'>

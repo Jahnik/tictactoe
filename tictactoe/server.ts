@@ -29,9 +29,9 @@ function convertToDB(gameState: GameState): DbGameState {
 function convertFromDB(dbGameState: DbGameState): GameState {
     const gameState: GameState = {
         id: dbGameState.id,
-        board: dbGameState.board.map(outer => outer.map(element => element ?? undefined)),
+        board: dbGameState.board.map(outer => outer.map(element => element ?? null)),
         player: dbGameState.player,
-        winner: dbGameState.winner ?? undefined
+        winner: dbGameState.winner ?? null
     }
     return gameState
 }

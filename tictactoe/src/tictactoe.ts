@@ -1,6 +1,6 @@
 export type Player = "X" | "O"
-export type Cell = Player | undefined
-export type Winner = Player | "Tie" | undefined
+export type Cell = Player | null
+export type Winner = Player | "Tie" | null
 
 export type GameState = {
     id: string
@@ -13,12 +13,12 @@ export const initialGameState: GameState = {
     id: "fancyUUID",
     board:
         [
-            [undefined, undefined, undefined],
-            [undefined, undefined, undefined],
-            [undefined, undefined, undefined]
+            [null, null, null],
+            [null, null, null],
+            [null, null, null]
         ],
     player: "X",
-    winner: undefined
+    winner: null
 }
 //*******WARNING*******: Due to the fact that JSON.stringify communicates undefineds as null, 
 // all server game logic uses ** null ** NOT undefined!
