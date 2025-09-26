@@ -9,8 +9,10 @@ export async function fetchGameState(id: string): Promise<GameState> {
     return game
 }
 
-export async function sendMove(move: { id: string, row: number, col: number }) {
+export async function sendMove(move: { gameState: GameState, row: number, col: number }) {
     //add support for ids to this
+    console.log("sendMove gameState:", move.gameState)
+    console.log("JSON gameState:", move.gameState)
     const res = await fetch('/move', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
