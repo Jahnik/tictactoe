@@ -64,7 +64,7 @@ function Game({ displayGameId, onReturnToLobby }: GameProps) {
                 Tic Tac Toe
             </h1>
             <div className="flex text">
-                Game: {game.id}
+                Game: {game.name}
             </div>
             <div className='flex flex-col'>
                 <Row>

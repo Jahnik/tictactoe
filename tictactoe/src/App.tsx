@@ -32,11 +32,11 @@ function App() {
     queryFn: fetchGameList
   })
 
-  const gameListData = (): string[] => {
-    if (isGameListLoading) return ["Game list is Loading"]
-    if (gameListError) return ["Game List Error"]
+  const gameListData = (): { id: string; name: string; }[] => {
+    if (isGameListLoading) return [{ id: "Game list is Loading", name: "Game list is Loading" }]
+    if (gameListError) return [{ id: "Game list Error", name: "Game list Error" }]
     if (fetchedGameList) return fetchedGameList
-    return ["This is also a problem"]
+    return [{ id: "This is also a problem", name: "This is also a problem" }]
   }
 
 
@@ -58,10 +58,10 @@ function App() {
           <div className='flex flex-col justify-center'>
             <div className='flex w-full flex-col'>
               <div className='flex justify-center text-5xl'>Game List</div>
-              <div className='flex border-2 flex-col justify-center text-5xl'>
-                {gameListData().map((id) =>
-                  <button className='text-2xl'
-                    key={id} onClick={() => handleGameSwitch(id)}> {id}
+              <div className='flex border-2 p-5 flex-col justify-center text-5xl'>
+                {gameListData().map((obj) =>
+                  <button className='text-2xl' key={obj.id} onClick={() => handleGameSwitch(obj.id)}>
+                    {obj.name}
                   </button>)}
               </div>
             </div>

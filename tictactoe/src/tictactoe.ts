@@ -1,9 +1,12 @@
+import { faker } from "@faker-js/faker"
+
 export type Player = "X" | "O"
 export type Cell = Player | null
 export type Winner = Player | "Tie" | null
 
 export type GameState = {
     id: string
+    name: string
     board: Cell[][],
     player: Player,
     winner: Winner,
@@ -11,6 +14,7 @@ export type GameState = {
 
 export const initialGameState: GameState = {
     id: "fancyUUID",
+    name: "faker-name-1",
     board:
         [
             [null, null, null],
@@ -24,6 +28,10 @@ export const initialGameState: GameState = {
 export function makeNewGame(): GameState {
     const newGame = structuredClone(initialGameState)
     newGame.id = crypto.randomUUID()
+    newGame.name = faker.helpers.slugify(
+        `${faker.word.adjective()}-${faker.word.noun()}-${faker.number.int({ min: 0, max: 999 })}`
+    ).toLowerCase()
+
     return newGame
 }
 

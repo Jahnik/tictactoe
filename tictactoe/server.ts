@@ -4,7 +4,7 @@ import { initialGameState, makeNewGame, type Cell, type GameState } from './src/
 import { makeMove } from './src/tictactoe'
 import { db } from './src/db/connection.ts'
 import { DbGameState, gamesTable } from './src/db/schema.ts'
-import { eq } from "drizzle-orm";
+import { eq, desc, asc } from "drizzle-orm";
 
 const app = express();
 app.use(express.json())
@@ -33,8 +33,8 @@ async function updateGame(gameState: GameState, row: number, col: number) {
 }
 
 async function selectGameList() {
-    const gameListObject = await db.select({ id: gamesTable.id }).from(gamesTable)
-    const gameList = gameListObject.map(r => r.id)
+    const gameListObject = await db.select({ id: gamesTable.id, state: gamesTable.state }).from(gamesTable).orderBy(desc(gamesTable.createdAt))
+    const gameList = gameListObject.map(r => ({ id: r.id, name: r.state.name }))
     return gameList
 }
 
@@ -47,6 +47,7 @@ async function selectGame(id: string) {
 
 app.get("/game/:id", async (req, res, next) => {
     const { id } = req.params
+
     try {
         const game = await selectGame(id);
         return res.json(game)
