@@ -20,6 +20,8 @@ export const initialGameState: GameState = {
     player: "X",
     winner: undefined
 }
+//*******WARNING*******: Due to the fact that JSON.stringify communicates undefineds as null, 
+// all server game logic uses ** null ** NOT undefined!
 
 export function makeNewGame(): GameState {
     const newGame = structuredClone(initialGameState)
@@ -63,10 +65,7 @@ function checkDiagWin(gameState: GameState, player: Player): boolean {
 
 
 export function makeMove(gameState: GameState, row: number, col: number, player: Player): GameState {
-    console.log('in makeMove function, gameState:', gameState)
-
     const newState = structuredClone(gameState)
-    console.log('in makeMove function, newState', newState)
 
     if (newState.winner) {
         return newState

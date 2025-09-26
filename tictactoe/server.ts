@@ -4,7 +4,6 @@ import { initialGameState, makeNewGame, type Cell, type GameState } from './src/
 import { makeMove } from './src/tictactoe'
 import { db } from './src/db/connection.ts'
 import { DbGameState, gamesTable } from './src/db/schema.ts'
-import { stringify } from "querystring";
 import { eq } from "drizzle-orm";
 
 const app = express();
@@ -14,10 +13,6 @@ app.use((err: unknown, _req: express.Request, res: express.Response, _next: expr
     console.error(err)
     res.status(500).json({ message: 'Internal Server Error' })
 })
-
-var serverGameState = structuredClone(initialGameState)
-const serverGames = new Map<string, GameState>()
-//serverGames.set("fancyUUID", serverGameState)
 
 
 function convertToDB(gameState: GameState): DbGameState {
@@ -50,12 +45,9 @@ async function insertGame(gameState: GameState) {
 }
 
 async function updateGame(gameState: GameState, row: number, col: number) {
-    console.log('initial state:', gameState)
     const updatedGameState = makeMove(gameState, row, col, gameState.player)
-    console.log('made move:', updatedGameState)
 
     const updatedDbGameState = convertToDB(updatedGameState)
-    console.log(updatedDbGameState)
 
     return db.update(gamesTable).set(
         { state: updatedDbGameState }
@@ -85,11 +77,10 @@ app.get("/game/:id", async (req, res, next) => {
     } catch (err) {
         next(err)
     }
-    //res.json((serverGames.get(id)))
+
 });
 
 app.get("/games", async (_, res, next) => {
-    // const gameList = [...serverGames.keys()]
     try {
         const gameList = await selectGameList();
         return res.json(gameList)
@@ -97,16 +88,11 @@ app.get("/games", async (_, res, next) => {
         next(err)
     }
 
-    //res.json(gameList)
+
 });
 
 app.post("/move", async (req, res, next) => {
     const { gameState, row, col } = req.body;
-    console.log("/move gameState:", gameState)
-    // const selectedGame = serverGames.get(gameState.id)
-    // if (!selectedGame) return res.status(404).json({ message: 'Game not found' })
-
-    // serverGames.set(selectedGame.id, makeMove(selectedGame, row, col, selectedGame.player))
 
     try {
         const updateFinished = await updateGame(gameState, row, col);
@@ -114,19 +100,18 @@ app.post("/move", async (req, res, next) => {
     } catch (err) {
         next(err)
     }
-    //res.json((serverGameState)) //this doesn't actually do anything??
 })
 
 app.post("/create", async (req, res, next) => {
     const newServerGame = makeNewGame()
-    // serverGames.set(newServerGame.id, newServerGame)
+
     try {
         const insertionFinished = await insertGame(newServerGame);
         return res.json(insertionFinished)
     } catch (err) {
         next(err)
     }
-    //res.json((insertionFinished)) //this doesn't actually do anything??
+
 })
 
 

@@ -47,7 +47,6 @@ function Game({ displayGameId, onReturnToLobby }: GameProps) {
     })
 
     function handleMove(gameState: GameState, row: number, col: number) {
-        //game.winner === undefined ? setGame(makeMove(game, row, col, game.player)) : setGame(game)
         if (!game) return
         if (game.board[row][col]) return
 
