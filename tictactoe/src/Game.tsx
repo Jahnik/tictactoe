@@ -13,7 +13,7 @@ type CellProps = {
 const Cell = ({ value, onClick }: CellProps) => {
     return (
         <div className="flex-1 aspect-square border flex items-center justify-center text-8xl rounded-2xl" onClick={onClick}>
-            {value === undefined ? "_" : value}
+            {value === null ? "" : value}
         </div>
     )
 }
@@ -47,7 +47,6 @@ function Game({ displayGameId, onReturnToLobby }: GameProps) {
     })
 
     function handleMove(gameState: GameState, row: number, col: number) {
-        //game.winner === undefined ? setGame(makeMove(game, row, col, game.player)) : setGame(game)
         if (!game) return
         if (game.board[row][col]) return
 
@@ -65,7 +64,7 @@ function Game({ displayGameId, onReturnToLobby }: GameProps) {
                 Tic Tac Toe
             </h1>
             <div className="flex text">
-                Game: {game.id}
+                Game: {game.name}
             </div>
             <div className='flex flex-col'>
                 <Row>
@@ -85,7 +84,7 @@ function Game({ displayGameId, onReturnToLobby }: GameProps) {
                 </Row>
             </div>
             <h1 className="flex text-3xl justify-center">
-                The Winner is: {game.winner === undefined ? "TBD!" : game.winner}
+                The Winner is: {game.winner === null ? "TBD!" : game.winner}
             </h1>
             <button onClick={onReturnToLobby}>Return to Lobby</button>
         </div >

@@ -1,9 +1,12 @@
+import { faker } from "@faker-js/faker"
+
 export type Player = "X" | "O"
-export type Cell = Player | undefined
-export type Winner = Player | "Tie" | undefined
+export type Cell = Player | null
+export type Winner = Player | "Tie" | null
 
 export type GameState = {
     id: string
+    name: string
     board: Cell[][],
     player: Player,
     winner: Winner,
@@ -11,24 +14,28 @@ export type GameState = {
 
 export const initialGameState: GameState = {
     id: "fancyUUID",
+    name: "faker-name-1",
     board:
         [
-            [undefined, undefined, undefined],
-            [undefined, undefined, undefined],
-            [undefined, undefined, undefined]
+            [null, null, null],
+            [null, null, null],
+            [null, null, null]
         ],
     player: "X",
-    winner: undefined
+    winner: null
 }
 
 export function makeNewGame(): GameState {
     const newGame = structuredClone(initialGameState)
     newGame.id = crypto.randomUUID()
+    newGame.name = faker.helpers.slugify(
+        `${faker.word.adjective()}-${faker.word.noun()}-${faker.number.int({ min: 0, max: 999 })}`
+    ).toLowerCase()
+
     return newGame
 }
 
 function checkTie(gameState: GameState): boolean {
-    //CONVERTED UNDEFINED TO NULL HERE
     return gameState.board.flat().every(cell => cell !== null)
 }
 
@@ -63,29 +70,25 @@ function checkDiagWin(gameState: GameState, player: Player): boolean {
 
 
 export function makeMove(gameState: GameState, row: number, col: number, player: Player): GameState {
-    console.log('in makeMove function, gameState:', gameState)
-
     const newState = structuredClone(gameState)
-    console.log('in makeMove function, newState', newState)
 
     if (newState.winner) {
         return newState
     }
 
-    //CONVERTED UNDEFINED TO NULL HERE
     if (newState.board[row][col] !== null) {
         return newState
     }
     newState.board[row][col] = player
 
-    if (checkTie(newState)) {
-        newState.winner = "Tie"
-    } else if (checkRowWin(newState, newState.player)) {
+    if (checkRowWin(newState, newState.player)) {
         newState.winner = player
     } else if (checkColWin(newState, newState.player)) {
         newState.winner = player
     } else if (checkDiagWin(newState, newState.player)) {
         newState.winner = player
+    } else if (checkTie(newState)) {
+        newState.winner = "Tie"
     }
 
     newState.player === "X" ? newState.player = "O" : newState.player = "X"
