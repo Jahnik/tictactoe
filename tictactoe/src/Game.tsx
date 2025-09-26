@@ -2,7 +2,7 @@ import React from 'react'
 import './App.css'
 import './index.css'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { type Cell } from './tictactoe'
+import { type Cell, type GameState } from './tictactoe'
 import { fetchGameState, sendMove } from './api'
 
 type CellProps = {
@@ -46,12 +46,12 @@ function Game({ displayGameId, onReturnToLobby }: GameProps) {
         }
     })
 
-    function handleMove(id: string, row: number, col: number) {
+    function handleMove(gameState: GameState, row: number, col: number) {
         //game.winner === undefined ? setGame(makeMove(game, row, col, game.player)) : setGame(game)
         if (!game) return
         if (game.board[row][col]) return
 
-        gameStateMutation.mutate({ id, row, col })
+        gameStateMutation.mutate({ gameState, row, col })
     }
 
     if (gameStateLoading) return <p> Loading...</p>
@@ -69,19 +69,19 @@ function Game({ displayGameId, onReturnToLobby }: GameProps) {
             </div>
             <div className='flex flex-col'>
                 <Row>
-                    <Cell value={game.board[0][0]} onClick={() => { handleMove(game.id, 0, 0) }}></Cell>
-                    <Cell value={game.board[0][1]} onClick={() => { handleMove(game.id, 0, 1) }}></Cell>
-                    <Cell value={game.board[0][2]} onClick={() => { handleMove(game.id, 0, 2) }}></Cell>
+                    <Cell value={game.board[0][0]} onClick={() => { handleMove(game, 0, 0) }}></Cell>
+                    <Cell value={game.board[0][1]} onClick={() => { handleMove(game, 0, 1) }}></Cell>
+                    <Cell value={game.board[0][2]} onClick={() => { handleMove(game, 0, 2) }}></Cell>
                 </Row>
                 <Row>
-                    <Cell value={game.board[1][0]} onClick={() => { handleMove(game.id, 1, 0) }}></Cell>
-                    <Cell value={game.board[1][1]} onClick={() => { handleMove(game.id, 1, 1) }}></Cell>
-                    <Cell value={game.board[1][2]} onClick={() => { handleMove(game.id, 1, 2) }}></Cell>
+                    <Cell value={game.board[1][0]} onClick={() => { handleMove(game, 1, 0) }}></Cell>
+                    <Cell value={game.board[1][1]} onClick={() => { handleMove(game, 1, 1) }}></Cell>
+                    <Cell value={game.board[1][2]} onClick={() => { handleMove(game, 1, 2) }}></Cell>
                 </Row>
                 <Row>
-                    <Cell value={game.board[2][0]} onClick={() => { handleMove(game.id, 2, 0) }}></Cell>
-                    <Cell value={game.board[2][1]} onClick={() => { handleMove(game.id, 2, 1) }}></Cell>
-                    <Cell value={game.board[2][2]} onClick={() => { handleMove(game.id, 2, 2) }}></Cell>
+                    <Cell value={game.board[2][0]} onClick={() => { handleMove(game, 2, 0) }}></Cell>
+                    <Cell value={game.board[2][1]} onClick={() => { handleMove(game, 2, 1) }}></Cell>
+                    <Cell value={game.board[2][2]} onClick={() => { handleMove(game, 2, 2) }}></Cell>
                 </Row>
             </div>
             <h1 className="flex text-3xl justify-center">

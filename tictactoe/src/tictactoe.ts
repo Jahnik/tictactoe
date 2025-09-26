@@ -28,7 +28,8 @@ export function makeNewGame(): GameState {
 }
 
 function checkTie(gameState: GameState): boolean {
-    return gameState.board.flat().every(cell => cell !== undefined)
+    //CONVERTED UNDEFINED TO NULL HERE
+    return gameState.board.flat().every(cell => cell !== null)
 }
 
 function checkRowWin(gameState: GameState, player: Player): boolean {
@@ -62,12 +63,17 @@ function checkDiagWin(gameState: GameState, player: Player): boolean {
 
 
 export function makeMove(gameState: GameState, row: number, col: number, player: Player): GameState {
+    console.log('in makeMove function, gameState:', gameState)
+
     const newState = structuredClone(gameState)
+    console.log('in makeMove function, newState', newState)
+
     if (newState.winner) {
         return newState
     }
 
-    if (newState.board[row][col] !== undefined) {
+    //CONVERTED UNDEFINED TO NULL HERE
+    if (newState.board[row][col] !== null) {
         return newState
     }
     newState.board[row][col] = player
@@ -85,4 +91,3 @@ export function makeMove(gameState: GameState, row: number, col: number, player:
     newState.player === "X" ? newState.player = "O" : newState.player = "X"
     return newState
 }
-
