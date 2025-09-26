@@ -14,32 +14,10 @@ app.use((err: unknown, _req: express.Request, res: express.Response, _next: expr
     res.status(500).json({ message: 'Internal Server Error' })
 })
 
-
-function convertToDB(gameState: GameState): DbGameState {
-    const dbGameState: DbGameState = {
-        id: gameState.id,
-        board: gameState.board.map(outer => outer.map(element => element ?? null)),
-        player: gameState.player,
-        winner: gameState.winner ?? null
-    }
-
-    return dbGameState
-}
-
-function convertFromDB(dbGameState: DbGameState): GameState {
-    const gameState: GameState = {
-        id: dbGameState.id,
-        board: dbGameState.board.map(outer => outer.map(element => element ?? null)),
-        player: dbGameState.player,
-        winner: dbGameState.winner ?? null
-    }
-    return gameState
-}
-
 async function insertGame(gameState: GameState) {
     return db.insert(gamesTable).values({
-        id: convertToDB(gameState).id,       // string UUID
-        state: convertToDB(gameState),       // gameStateDb object goes into JSONB column
+        id: gameState.id,       // string UUID
+        state: gameState,       // gameStateDb object goes into JSONB column
         version: 0,          // start optimistic lock counter
     }).returning()
 }
@@ -47,7 +25,7 @@ async function insertGame(gameState: GameState) {
 async function updateGame(gameState: GameState, row: number, col: number) {
     const updatedGameState = makeMove(gameState, row, col, gameState.player)
 
-    const updatedDbGameState = convertToDB(updatedGameState)
+    const updatedDbGameState = updatedGameState
 
     return db.update(gamesTable).set(
         { state: updatedDbGameState }
@@ -63,11 +41,9 @@ async function selectGameList() {
 async function selectGame(id: string) {
     const [dbGame] = await db.select().from(gamesTable).where(eq(gamesTable.id, id));
     if (dbGame.state) {
-        return convertFromDB(dbGame.state)
+        return dbGame.state
     }
 }
-
-
 
 app.get("/game/:id", async (req, res, next) => {
     const { id } = req.params

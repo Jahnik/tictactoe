@@ -1,6 +1,6 @@
 // import { db } from "./src/db/connection"
 // import { DbGameState, gamesTable } from "./src/db/schema"
-import { GameState, Player } from "./src/tictactoe"
+// import { GameState, Player } from "./src/tictactoe"
 
 // async function insertRandomGame() {
 
@@ -38,17 +38,17 @@ import { GameState, Player } from "./src/tictactoe"
 
 // }
 
-const consoleTest: GameState = {
-    id: "fingersCrossed",
-    board:
-        [
-            [undefined, undefined, undefined],
-            [undefined, undefined, undefined],
-            [undefined, undefined, undefined]
-        ],
-    player: 'X',
-    winner: undefined
-}
+// const consoleTest: GameState = {
+//     id: "fingersCrossed",
+//     board:
+//         [
+//             [undefined, undefined, undefined],
+//             [undefined, undefined, undefined],
+//             [undefined, undefined, undefined]
+//         ],
+//     player: 'X',
+//     winner: undefined
+// }
 
-console.log(consoleTest);
+// console.log(consoleTest);
 //insertRandomGame()
