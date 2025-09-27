@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import './index.css'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
@@ -20,11 +20,24 @@ const Cell = ({ value, onClick }: CellProps) => {
 }
 
 function App() {
-  const [displayGameId, setDisplayGameId] = useState<string | null>(null)
+  const [displayGameId, setDisplayGameId] = useState<{ id: string; name: string; } | null>(null)
   const queryClient = useQueryClient()
 
-  function handleGameSwitch(id: string) {
-    setDisplayGameId(id)
+  useEffect(() => {
+    console.log('checking url')
+    if (window.location.href.includes("/showGame/")) {
+      const fullUrl = window.location.href
+      const sub = "/showGame/"
+      const index = fullUrl.indexOf(sub)
+      const result = index !== -1 ? fullUrl.slice(index + sub.length) : "";
+      console.log(result);
+      const callIt = () => setDisplayGameId({ id: '', name: result })
+      callIt();
+    }
+  }, []); // Does not run again (except once in development)
+
+  function handleGameSwitch(obj: { id: string; name: string; }) {
+    setDisplayGameId(obj)
   }
 
   const { data: fetchedGameList, isLoading: isGameListLoading, error: gameListError } = useQuery({
@@ -60,10 +73,11 @@ function App() {
               <div className='flex justify-center text-5xl'>Game List</div>
               <div className='flex border-2 p-5 flex-col justify-center text-5xl'>
                 {gameListData().map((obj) =>
-                  <button className='text-2xl' key={obj.id} onClick={() => handleGameSwitch(obj.id)}>
+                  <button className='text-2xl' key={obj.id} onClick={() => handleGameSwitch({ id: obj.id, name: obj.name })}>
                     {obj.name}
                   </button>)}
               </div>
+              <div>{/*JSON.stringify(window.location)*/}</div>
             </div>
             <button className='flex justify-center text-2xl' onClick={handleCreate}>
               New Game

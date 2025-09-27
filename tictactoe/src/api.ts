@@ -1,9 +1,9 @@
 import type { GameState } from "./tictactoe"
 
 
-export async function fetchGameState(id: string): Promise<GameState> {
-    const res = await fetch(`/game/${encodeURIComponent(id)}`)
-    if (!res.ok) throw new Error('failed to fetch game')
+export async function fetchGameState(obj: { id: string; name: string; }): Promise<GameState> {
+    const res = await fetch(`/game/${encodeURIComponent(obj.name)}`)
+    if (!res.ok) throw new Error(`failed to fetch game ${obj.name}`)
     const game = await res.json() as GameState // TODO: validate instead of typecasting
     return game
 }

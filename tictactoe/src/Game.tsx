@@ -27,7 +27,7 @@ const Row = (props: React.PropsWithChildren) => {
 }
 
 type GameProps = {
-    displayGameId: string
+    displayGameId: { id: string; name: string; }
     onReturnToLobby: () => void
 }
 

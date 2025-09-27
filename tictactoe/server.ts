@@ -16,9 +16,10 @@ app.use((err: unknown, _req: express.Request, res: express.Response, _next: expr
 
 async function insertGame(gameState: GameState) {
     return db.insert(gamesTable).values({
-        id: gameState.id,       // string UUID
-        state: gameState,       // gameStateDb object goes into JSONB column
-        version: 0,          // start optimistic lock counter
+        id: gameState.id,
+        name: gameState.name,
+        state: gameState,
+        version: 0,
     }).returning()
 }
 
@@ -38,8 +39,9 @@ async function selectGameList() {
     return gameList
 }
 
-async function selectGame(id: string) {
-    const [dbGame] = await db.select().from(gamesTable).where(eq(gamesTable.id, id));
+async function selectGame(name: string) {
+    console.log(name);
+    const [dbGame] = await db.select().from(gamesTable).where(eq(gamesTable.name, name));
     if (dbGame.state) {
         return dbGame.state
     }
